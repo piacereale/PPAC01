@@ -1,25 +1,22 @@
-"""nome,cognome,eta
-enrico, verdi, 52
-alice, bianchi,36
-giovanna, rossi, 22"""
+
 
 #aprire il file
 import os
 import json
 
-nomefile='nomefile.csv'
+nomefile='NomeCognomeEta.csv'
 nomefile=os.path.abspath(nomefile)
-with open('nomefile.csv',r) as fr: 
+with open(nomefile, "r",encoding='utf-8') as fr: #UniversalTypograficFormat (UTF). Se fosse ascii (american s...) non sa leggere le vocali accentate
 
 #leggere il file
   paperino = fr.read()
 
 
 #dividere per righe
-righe= paperino.split(\n)
+righe= paperino.split("\n")
 
 #costruitre il dizionario
-datdiz={}
+dizdati={}
 
 #dividere ogni riga per coloonna
 riga=0
@@ -28,14 +25,14 @@ for r in righe:
    print(r)
    print(colonne)
 
-    if riga==0:
-        chiavi=colonne
-    else:
-        dizdati[riga]={}
-        dizdati[riga][chiavi[0]]=colonne[0]
-        dizdati[riga][chiavi[1]]=colonne[1]
-        dizdati[riga][chiavi[2]]=colonne[2]
-    riga=riga+1
+   if riga==0:
+      chiavi=colonne
+   else:
+      dizdati[riga]={}
+      dizdati[riga][chiavi[0]]=colonne[0]
+      dizdati[riga][chiavi[1]]=colonne[1]
+      dizdati[riga][chiavi[2]]=colonne[2]
+   riga=riga+1
 #print(dizdati)
 
 
@@ -46,7 +43,60 @@ jdata=json.dumps(dizdati)
 #print('DIZIONARIO'->, dizdata)
 
 #scrivere i dati in formato json
-with open('jdati.json', w) as fw:
+with open('jdati.json', "w", encoding='utf-8') as fw:
   fw.write(jdata)
+  
+#adesso facciamo il contrario
+#leggiamo il file json
+with open('jdati.json', 'r', encoding='utf-8') as fr:
+   buffer=fr.read()
+
+#lo ritrasformo in un dizionario
+dicDatiNew = json.loads(buffer)
+print(dicDatiNew)
+
+#rifaccio il file csv
+chiavi=dicDatiNew.keys()
+print(chiavi)
+
+righe=0
+file=[]
+
+for k in chiavi:
+   dicPiccolo=dicDatiNew[k]
+   chiaviCSV = dicPiccolo.keys()
+   rigaCSV=''
+   if righe==0:
+      rigaIntestazione=''
+      for k2 in chiaviCSV:
+         rigaIntestazione += k2 + ';'
+      print(rigaIntestazione)
+      intestazione = rigaIntestazione[:-1]  #togliamo l'ultimo punto e virgola
+      intestazione = intestazione + '\n'
+      file.append(intestazione)
+      righe +=1
+  
+   else:
+      for k3 in chiaviCSV:
+         rigaCSV += dicPiccolo[k3] + ';'
+      rigaCSV=rigaCSV[:-1] + '\n'
+      print(rigaCSV)
+      file.append(rigaCSV)
+
+print(file)
+
+
+#Devo scrivere il nuovo file csv
+buffer=''
+for z in file:
+   buffer += z
+
+buffer=buffer[:-1] #l'ultimo a capo crea una riga vuota. 
+
+with open('nuovoCSV.CSV', 'w', encoding ='utf-8') as fw:
+   fw.write(buffer)
+
+
+
 
     
