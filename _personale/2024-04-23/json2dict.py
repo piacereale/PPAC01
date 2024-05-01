@@ -4,8 +4,8 @@
 import os
 import json
 
-nomefile='NomeCognomeEta.csv'
-nomefile=os.path.abspath(nomefile)
+nomefile='./_personale/2024-04-23/NomeCognomeEta.csv'
+#nomefile=os.path.abspath(nomefile)
 with open(nomefile, "r",encoding='utf-8') as fr: #UniversalTypograficFormat (UTF). Se fosse ascii (american s...) non sa leggere le vocali accentate
 
 #leggere il file
@@ -21,7 +21,7 @@ dizdati={}
 #dividere ogni riga per coloonna
 riga=0
 for r in righe:
-   colonne= r.split(';')
+   colonne= r.split(',')
    print(r)
    print(colonne)
 
